@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { Navigate } from 'react-router';
+import { useSearchParams } from 'react-router-dom';
+import { getCredentialsFromDb } from './utility/utils';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const App = () => {
+    const [credentail, setCredentail] = useState(null);
+    const [searchedParams] = useSearchParams();
+
+    useEffect(() => {
+        console.log("calling useEffect");
+        getCredentialsFromDb(credentail => setCredentail(credentail));
+        console.log(credentail);
+        console.log(searchedParams.get("s"));
+        console.log(searchedParams.get("code"));
+        console.log(searchedParams.get("auth_code"));
+    });
+
+    // Navigate to the Location.reload article
+    return (
+        <div>
+            {
+                credentail == null ? <Navigate to="/auth" /> : null
+            }
+        </div>
+    )
 }
 
-export default App;
+export default App
