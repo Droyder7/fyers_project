@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Navigate } from 'react-router';
-import { getCredentialsFromDb } from './utility/Utils';
+import { UserContext } from './Routes';
 
 const App = () => {
-    const [credentail, setCredentail] = useState(null);
-
-    useEffect(() => {
-        console.log("calling useEffect");
-        getCredentialsFromDb(credentail => setCredentail(credentail));
-    });
+    const { user } = useContext(UserContext);
 
     // Navigate to the Location.reload article
     return (
         <div>
             {
-                credentail == null ? <Navigate to="/auth" /> : null
+                !user ? <Navigate to="/auth" /> : <p>Hello { user.name == null ? "user" : user.name }</p>
             }
         </div>
     )

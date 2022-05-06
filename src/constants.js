@@ -1,6 +1,6 @@
 import { generateRandomString } from "./utility/Random";
 
-const clientId = process.env.REACT_APP_CLIENT_ID;
+export const clientId = process.env.REACT_APP_CLIENT_ID;
 const secretKey = process.env.REACT_APP_SECRET_KEY;
 const redirectUri = process.env.REACT_APP_REDIRECT_URI;
 export const state = generateRandomString(6);
@@ -102,10 +102,10 @@ const sha256 = s => {
     s = Utf8Encode(s);
     return binb2hex(core_sha256(str2binb(s), s.length * chrsz));
 }
-export const appIdHash2 = sha256(`${clientId}:${secretKey}`);
-export const appIdHash = "47d187ac9de526c9df187af8f1a7edbf0ec26dce31445f5919ad176296f16cb5";
+export const appIdHash = sha256(`${clientId}:${secretKey}`);
+export const appIdHash2 = "47d187ac9de526c9df187af8f1a7edbf0ec26dce31445f5919ad176296f16cb5";
 
 
 export const fyersAuthTokenUrl = `https://api.fyers.in/api/v2/generate-authcode?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
-
 export const fyersValidateAuthcode = `https://api.fyers.in/api/v2/validate-authcode`;
+export const fyersGetProfileInfo = 'https://api.fyers.in/api/v2/profile';
