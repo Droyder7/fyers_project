@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { fyersAuthTokenUrl } from './constants';
-import CustomResponse from './CustomResponse';
-import { getAccesstoken, saveCredentailsInDb } from './utility/utils';
+import { fyersAuthTokenUrl } from './Constants';
+import { getAccesstoken, saveCredentailsInDb } from './utility/Utils';
 
 // this component is made for server side authentication and fill all the required data into db
 const AuthComponent = () => {
     const [searchedParams] = useSearchParams();
 
     useEffect(() => {
-        const responseStatus = searchedParams.get("s");
-        const responseState = searchedParams.get("state");
-        const response = new CustomResponse(responseStatus, responseState);
-        if (response.checkIfSuccessCode() && response.checkIfSuccessState()) {
+        // window.location.assign
+        const responseCode = searchedParams.get("code");
+        if (responseCode === "200") {
             const responseAuthCode = searchedParams.get("auth_code");
-            response.authCode = responseAuthCode;
-            getAccesstoken(response);
-            saveCredentailsInDb(response);
-
+            console.log(`authcode: ${responseAuthCode}`);
+            getAccesstoken(responseAuthCode);
+            saveCredentailsInDb("authcode", responseAuthCode);
         } else {
-            console.error(`Error occured, resposeStatus: ${responseStatus}`);
+            console.error(`Error occured, resposeStatus: ${responseCode}`);
         }
 
 
