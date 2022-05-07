@@ -9,7 +9,7 @@ const App = () => {
     return (
         <div>
             {
-                !user ? <Navigate to="/auth" /> : <p>Hello { user.name == null ? "user" : user.name }</p>
+                !user ? <Navigate to="/auth" /> : <p>Hello { user?.profile?.name }</p>
             }
         </div>
     )

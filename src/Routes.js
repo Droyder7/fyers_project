@@ -10,19 +10,22 @@ const UserContext = createContext();
 function Routes() {
   const [user, setUser] = useState();
   useEffect(() => {
-    localforage.getItem("user").then(user => setUser(user)).catch(err => console.error(err));
+    localforage.getItem("user")
+      .then(user => setUser(user))
+      .catch(err => console.log(err));
+    
   }, []);
 
   return (
     <>
-      <UserContext.Provider value={{user, setUser}}>
-      <Switch>
-        <Route path="/" exact element={<App />} />
-        <Route path="/auth" exact element={<AuthComponent />} />
+      <UserContext.Provider value={{ user, setUser }}>
+        <Switch>
+          <Route path="/" exact element={<App />} />
+          <Route path="/auth" exact element={<AuthComponent />} />
         </Switch>
       </UserContext.Provider>
     </>
   );
 }
 
-export { Routes, UserContext};
+export { Routes, UserContext };

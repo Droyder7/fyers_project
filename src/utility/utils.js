@@ -1,8 +1,7 @@
 import axios from 'axios';
 import localforage from 'localforage';
 import AuthComponent from '../AuthComponent';
-import { appIdHash, appIdHash2, clientId, fyersGetProfileInfo, fyersValidateAuthcode } from '../Constants'
-import CustomResponse from '../CustomResponse';
+import { appIdHash, clientId, fyersGetProfileInfo, fyersValidateAuthcode } from '../Constants';
 
 export const getCredentials = next => {
     let found = getCredentialsFromDb(next);
@@ -18,7 +17,7 @@ const getCredentialsFromWeb = next => {
     </>
 }
 
-export const getAccesstoken = code => {
+export const getAccesstoken = (code, next) => {
     console.log(`appidHash: ${appIdHash} \n
     code: ${code}`);
 
@@ -41,20 +40,21 @@ export const getAccesstoken = code => {
         .then(res => {
             console.log(res.data);
             const accessToken = res.data.access_token;
-            const expiryTime = Date.now() + 24*3600*1000; // date in miliseconds
-            saveCredentailsInDb({accessToken, expiryTime, code});
+            const expiryTime = Date.now() + 24 * 3600 * 1000; // date in miliseconds
+            const user = {
+                "accessToken": accessToken,
+                "expiryTime": expiryTime,
+                "code": code
+            };
+            getProfileInfo(user, next);
         })
         .catch(err => {
-            console.log(err);
+            console.log(err?.data?.message);
         });
 }
 
-export const getProfileInfo = () => {
-    const user = localforage.getItem("user")
-        .then(user => user)
-        .catch(err => console.error(err));
-
-    const  config = {
+export const getProfileInfo = (user = {}, next = a => { }) => {
+    const config = {
         method: 'get',
         url: fyersGetProfileInfo,
         headers: {
@@ -62,15 +62,26 @@ export const getProfileInfo = () => {
         }
     };
     axios(config).then(res => {
-        saveCredentailsInDb(res.data);
+        console.log(res.data);
+        const { display_name: name, fy_id: fyersId, email_id: email } = res.data.data;
+        user["profile"] = { name, fyersId, email };
+        saveCredentailsInDb(user, next);
     }).catch(err => console.error(err));
 }
 
-const saveCredentailsInDb = (obj) => {
+const saveCredentailsInDb = (obj, next = a => { }) => {
     localforage.getItem("user").then(user => {
+        if (user == null) {
+            user = {};
+        }
         for (const key in obj) {
             user[key] = obj[key];
         }
-        localforage.setItem("user", user);
+        localforage.setItem("user", user)
+            .then(user => {
+                next(user);
+                console.log(`Successfully saved into db ${user}`);
+            })
+            .catch(err => console.error(err));
     }).catch(err => console.error(err));
 }
