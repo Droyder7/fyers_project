@@ -109,3 +109,4 @@ export const appIdHash2 = "47d187ac9de526c9df187af8f1a7edbf0ec26dce31445f5919ad1
 export const fyersAuthTokenUrl = `https://api.fyers.in/api/v2/generate-authcode?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&state=${state}`;
 export const fyersValidateAuthcode = `https://api.fyers.in/api/v2/validate-authcode`;
 export const fyersGetProfileInfo = 'https://api.fyers.in/api/v2/profile';
+export const fyersGetHoldingsInfo = 'https://api.fyers.in/api/v2/holdings';

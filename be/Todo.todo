@@ -1,0 +1,19 @@
+
+
+
+
+ask all the values,
+    get the account current size from api call..
+    ask for entry price
+    ask for price level
+    ask for sl
+    as for % of capital to risk
+    calculate the quantity
+    show the quantity
+    let the user decide the final quantity
+    buy the shares
+    put the log into the excel sheet
+
+
+
+at the end will create a shell script in python, to run everything in batch

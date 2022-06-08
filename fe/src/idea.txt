@@ -1,0 +1,7 @@
+will create an object named user, will store all the details into that user object and storing it into the localforage.
+
+user will be used as a context of the whole project or we can use redux in this case
+
+
+
+use of js file handling to store the credentials instead of saving into localforage
